@@ -25,4 +25,4 @@ jobs:
         app-name: 'Contact-Database-application-2021'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
-        package: './<Path to your Web Deploy package>'
+        package: './bin/CRUD application 2.dll'
