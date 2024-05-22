@@ -1,0 +1,28 @@
+name: Build and deploy .NET Framework app to Azure Web App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build with MSBuild
+      run: msbuild /p:Configuration=Release
+
+    - name: 'Deploy to Azure WebApp'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'Contact-Database-application-2021'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
+        package: './<Path to your Web Deploy package>'
