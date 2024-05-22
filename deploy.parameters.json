@@ -7,9 +7,6 @@
         },
         "appServicePlanName": {
             "value": "lab"
-        },
-        "location": {
-            "value": "West US 2"
         }
     }
 }
