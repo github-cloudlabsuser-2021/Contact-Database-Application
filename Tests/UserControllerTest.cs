@@ -24,34 +24,69 @@ namespace CRUD_application_2.Tests.Controllers
             };
 
             UserController.userlist = users;
+            UserController.free_id = 3;
             controller = new UserController();
         }
 
+        // ... other tests ...
+
         [TestMethod]
-        public void Index()
+        public void Create()
         {
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            User newUser = new User { Name = "User3" };
+            RedirectToRouteResult result = controller.Create(newUser) as RedirectToRouteResult;
 
             // Assert
-            CollectionAssert.AreEqual(users, (List<User>)result.ViewData.Model);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Details", result.RouteValues["action"]);
+            Assert.AreEqual(3, result.RouteValues["id"]);
+            Assert.AreEqual(3, UserController.userlist.Count);
+            Assert.AreEqual(newUser.Name, UserController.userlist.Last().Name);
         }
 
         [TestMethod]
-        public void Details_UserExists()
+        public void Edit_UserExists()
         {
             // Act
-            ViewResult result = controller.Details(1) as ViewResult;
+            User updatedUser = new User { Name = "UpdatedUser1" };
+            RedirectToRouteResult result = controller.Edit(1, updatedUser) as RedirectToRouteResult;
 
             // Assert
-            Assert.AreEqual(users.First(), result.ViewData.Model);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Details", result.RouteValues["action"]);
+            Assert.AreEqual(1, result.RouteValues["id"]);
+            Assert.AreEqual(updatedUser.Name, UserController.userlist.First(u => u.Id == 1).Name);
         }
 
         [TestMethod]
-        public void Details_UserDoesNotExist()
+        public void Edit_UserDoesNotExist()
         {
             // Act
-            HttpNotFoundResult result = controller.Details(999) as HttpNotFoundResult;
+            User updatedUser = new User { Name = "UpdatedUser1" };
+            HttpNotFoundResult result = controller.Edit(999, updatedUser) as HttpNotFoundResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void Delete_UserExists()
+        {
+            // Act
+            RedirectToRouteResult result = controller.Delete(1, null) as RedirectToRouteResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.IsFalse(UserController.userlist.Any(u => u.Id == 1));
+        }
+
+        [TestMethod]
+        public void Delete_UserDoesNotExist()
+        {
+            // Act
+            HttpNotFoundResult result = controller.Delete(999, null) as HttpNotFoundResult;
 
             // Assert
             Assert.IsNotNull(result);
