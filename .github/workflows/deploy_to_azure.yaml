@@ -23,7 +23,7 @@ jobs:
       run: nuget restore
 
     - name: Build with MSBuild
-      run: msbuild /p:Configuration=Release
+      run: msbuild /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="./"
 
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v2
@@ -31,4 +31,4 @@ jobs:
         app-name: 'Contact-Database-application-2021'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
-        package: './bin/CRUD application 2.dll'
+        package: './CRUD application 2.zip'
