@@ -1,0 +1,31 @@
+﻿@model IEnumerable<CRUD_application_2.Models.User>
+
+<h2>User Search</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="searchQuery">Search Query:</label>
+        <input type="text" id="searchQuery" name="searchQuery" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>
